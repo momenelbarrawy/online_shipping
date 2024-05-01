@@ -19,7 +19,7 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
     }
 
     if ($user->register($role)) {
-      header("location:index.html");
+      header("location:../General/index.html");
     }
   } else {
     echo "Please fill all fields";
@@ -45,7 +45,13 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   <link rel="stylesheet" href="../Assets/css/font-awesome.min.css" />
 </head>
 
-<body>
+  <body>
+    <!-- 
+    <div class="alert alert-danger alert-dismissible py-3">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        Error 
+    </div> 
+    -->
   <div class="register">
     <div class="photo">
       <i class="fa-solid fa-user"></i>
