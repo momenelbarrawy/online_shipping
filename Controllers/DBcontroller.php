@@ -4,11 +4,15 @@
 
 class DBcontroller
 {
-    public $dbHost = "localhost";
-    public $dbUser = "root";
-    public $dbPassword = "";
-    public $dbName = "epay";
-    public $connection;
+    private $dbHost = "localhost";
+    private $dbUser = "root";
+    private $dbPassword = "";
+    private $dbName = "epay";
+    private $connection;
+
+    public function getConnection(){
+        return $this->connection;
+    }
 
 
     public function openConnection()
