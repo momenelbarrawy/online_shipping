@@ -93,6 +93,5 @@ class Seller extends Editor
     }
     public function replayComments(){}
 }
-$s= new Seller() ;
-$s->editProductPrice(3,500011);
+
 
