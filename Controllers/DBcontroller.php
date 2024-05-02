@@ -1,14 +1,16 @@
 <?php
 
-
-
 class DBcontroller
 {
-    public $dbHost = "localhost";
-    public $dbUser = "root";
-    public $dbPassword = "";
-    public $dbName = "epay";
-    public $connection;
+    private $dbHost = "localhost";
+    private $dbUser = "root";
+    private $dbPassword = "";
+    private $dbName = "ebay";
+    private $connection;
+
+    public function getConnection(){
+        return $this->connection;
+    }
 
 
     public function openConnection()
@@ -31,25 +33,16 @@ class DBcontroller
 
     public function insert($qry)
     {
-        $result = $this->connection->query($qry);
-        if (!$result) {
-            echo "Error : " . mysqli_error($this->connection);
+        $result=$this->connection->query($qry);
+        if(!$result)
+        {
+            echo "Error : ".mysqli_error($this->connection);
             return false;
-        } else {
+        }
+        else
+        {
             return $this->connection->insert_id;
         }
-    }
 
-    public function select($qry)
-    {
-        $result = $this->connection->query($qry);
-        if (!$result) {
-            echo "<div class=\"alert alert-danger alert-dismissible py-3\">
-            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
-            Error :" . mysqli_error($this->connection) . "</div>";
-            return false;
-        } else {
-            return  $result->fetch_all(MYSQLI_ASSOC);
-        }
     }
 }
