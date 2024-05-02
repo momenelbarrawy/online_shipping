@@ -79,8 +79,17 @@ class User
             return false;
         }
     }
-
     public function logout()
     {
+        $db = new DBcontroller;
+        if ($db->openConnection()) {
+            $query = "update users set loginstatus = 'disactive' where username = '$this->name'";
+            $db->insert($query);
+        } else {
+            echo "<div class=\"alert alert-danger alert-dismissible py-3\">
+            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+            Error : Database Connection</div>";
+            return false;
+        }
     }
 }
