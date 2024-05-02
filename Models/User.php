@@ -1,5 +1,5 @@
 <?php
-
+require_once '../../Controllers/DBcontroller.php';
 class User
 {
     protected $id;
@@ -44,6 +44,41 @@ class User
 
     public function login()
     {
+        $db = new DBcontroller;
+        if ($db->openConnection()) {
+            $query = "select userid ,username ,password , role from users where username = '$this->name'";
+            $result = $db->select($query);
+            var_dump($result);
+            if ($result != false) {
+                if ($result[0]["password"] == $this->password) {
+                    $query = "update users set loginstatus = 'active' where username = '$this->name'";
+                    $db->insert($query);
+                    session_start();
+                    $_SESSION["userid"] = $result['userid'];
+                    $_SESSION["username"] = $result['username'];
+                    $_SESSION["userrole"] = $result['role'];
+                    $db->closeConnection();
+                    return true;
+                } else {
+                    echo "<div class=\"alert alert-danger alert-dismissible py-3\">
+                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+                Error :password is worng </div>";
+                    $db->closeConnection();
+                    return false;
+                }
+            } else {
+                echo "<div class=\"alert alert-danger alert-dismissible py-3\">
+        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+        Error :user not found </div>";
+                $db->closeConnection();
+                return false;
+            }
+        } else {
+            echo "<div class=\"alert alert-danger alert-dismissible py-3\">
+            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+            Error : Database Connection</div>";
+            return false;
+        }
     }
 
     public function logout()
