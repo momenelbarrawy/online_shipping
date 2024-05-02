@@ -48,14 +48,15 @@ class Seller extends Editor
     
     public function addProduct($productName, $price, $category, $brand, $image, $description, $sellerid, $roll)
     {
-        $db = $this->dbController;
-        if ($db->connection === null) {
+        $db=new DBController;
+        $db->openConnection();
+        if ($db->getConnection() === null) {
             echo "Database connection is not established.";
             return;
         }
 
         $sql = "INSERT INTO product (pname, price, category, brand, image, description, sellerid, roll) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $db->connection->prepare($sql);
+        $stmt = $db->getConnection()->prepare($sql);
 
         $stmt->bind_param("sdsdssii", $productName, $price, $category, $brand, $image, $description, $sellerid, $roll);
         $stmt->execute();
@@ -63,7 +64,7 @@ class Seller extends Editor
         if ($stmt->affected_rows > 0) {
             echo "Product added successfully.";
         } else {
-            echo "Error adding product: " . $db->connection->error;
+            echo "Error adding product: " . $db->getConnection()->error;
         }
 
         $stmt->close();
@@ -71,14 +72,15 @@ class Seller extends Editor
 
     public function removeProduct($productId)
     {
-        $db = $this->dbController;
-        if ($db->connection === null) {
+        $db=new DBController;
+        $db->openConnection();
+        if ($db->getConnection() === null) {
             echo "Database connection is not established.";
             return;
         }
 
         $sql = "DELETE FROM product WHERE pid = ?";
-        $stmt = $this->dbController->connection->prepare($sql);
+        $stmt = $db->getConnection()->prepare($sql);
 
         $stmt->bind_param("i", $productId);
         $stmt->execute();
@@ -86,12 +88,10 @@ class Seller extends Editor
         if ($stmt->affected_rows > 0) {
             echo "Product removed successfully.";
         } else {
-            echo "Error removing product: " . $this->dbController->connection->error;
+            echo "Error removing product: " . $db->getConnection()->error;
         }
 
         $stmt->close();
     }
     public function replayComments(){}
 }
-
-
