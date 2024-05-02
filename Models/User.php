@@ -48,7 +48,6 @@ class User
         if ($db->openConnection()) {
             $query = "select userid ,username ,password , role from users where username = '$this->name'";
             $result = $db->select($query);
-            var_dump($result);
             if ($result != false) {
                 if ($result[0]["password"] == $this->password) {
                     $query = "update users set loginstatus = 'active' where username = '$this->name'";
