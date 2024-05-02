@@ -1,13 +1,27 @@
 <?php
-require_once("User.php");
-require_once("Buyer.php");
-class Seller extends User
+require_once("../Controllers/DBcontroller.php");
+require_once("../Controllers/EditProduct.php");
+$dbController = new DBController();
+$dbController->openConnection();
+class Seller extends Editor
 {
+    private $dbController;
+    private $name;
+    private $email;
 
-    public function register($role){
+    private $password;
+    private $phone;
+
+    public function register($role,$name , $email , $password , $phone)
+    {
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+        $this->phone = $phone;
+
         $db=new DBController;
         if($db->openConnection()){
-            $query="insert into users values ('','$this->name','$this->email','$this->password','$this->phone','$role','active')";
+            $query="insert into users values ('','$name','$email','$password','$phone','$role','active')";
             $result=$db->insert($query);
             if($result!=false)
             {
@@ -30,7 +44,55 @@ class Seller extends User
             echo "Error in Database Connection";
             return false;
         }
-
     }
     
+    public function addProduct($productName, $price, $category, $brand, $image, $description, $sellerid, $roll)
+    {
+        $db = $this->dbController;
+        if ($db->connection === null) {
+            echo "Database connection is not established.";
+            return;
+        }
+
+        $sql = "INSERT INTO product (pname, price, category, brand, image, description, sellerid, roll) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $db->connection->prepare($sql);
+
+        $stmt->bind_param("sdsdssii", $productName, $price, $category, $brand, $image, $description, $sellerid, $roll);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo "Product added successfully.";
+        } else {
+            echo "Error adding product: " . $db->connection->error;
+        }
+
+        $stmt->close();
+    }   
+
+    public function removeProduct($productId)
+    {
+        $db = $this->dbController;
+        if ($db->connection === null) {
+            echo "Database connection is not established.";
+            return;
+        }
+
+        $sql = "DELETE FROM product WHERE pid = ?";
+        $stmt = $this->dbController->connection->prepare($sql);
+
+        $stmt->bind_param("i", $productId);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo "Product removed successfully.";
+        } else {
+            echo "Error removing product: " . $this->dbController->connection->error;
+        }
+
+        $stmt->close();
+    }
+    public function replayComments(){}
 }
+$s= new Seller() ;
+$s->editProductPrice(3,500011);
+
