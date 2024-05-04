@@ -7,6 +7,7 @@ class User
     protected $email;
     protected $password;
     protected $phone;
+    protected $role;
 
     public function setname($name)
     {
@@ -39,6 +40,22 @@ class User
     public function getphone()
     {
         return $this->phone;
+    }
+    public function setid($id)
+    {
+        $this->id = $id;
+    }
+    public function getid()
+    {
+        return $this->id;
+    }
+    public function setrole($role)
+    {
+        $this->role = $role;
+    }
+    public function getrole()
+    {
+        return $this->role;
     }
 
 
@@ -79,6 +96,7 @@ class User
             return false;
         }
     }
+
     public function logout()
     {
         $db = new DBcontroller;
