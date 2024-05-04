@@ -10,7 +10,8 @@ class DBcontroller
     private $dbName = "epay";
     private $connection;
 
-    public function getConnection(){
+    public function getConnection()
+    {
         return $this->connection;
     }
 
@@ -62,6 +63,19 @@ class DBcontroller
         $result = $this->connection->query($qry);
         if (!$result) {
             echo "Error : " . mysqli_error($this->connection);
+            return false;
+        } else {
+            return $result;
+        }
+    }
+
+    public function update($qry)
+    {
+        $result = $this->connection->query($qry);
+        if (!$result) {
+            echo "<div class=\"alert alert-danger alert-dismissible py-3\">
+                  <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+                  Error : " . mysqli_error($this->connection) . "</div>";
             return false;
         } else {
             return $result;
